@@ -1,0 +1,1011 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:charset="UTF-8">
+<head>
+    <title>BioCC</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/FirstPage.html">BioCC</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/FirstPage.html">Home</a></li>
+        </ul>
+        <form class="navbar-form navbar-right" method="post" action="search" enctype="multipart/form-data">
+            <div class="input-group">
+                <input th:type="text" name="text" class="form-control" placeholder="Search"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </div>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li sec:authorize="isAuthenticated()">
+                <a href="/logout" th:method="post"><span class="glyphicon glyphicon-log-out"> </span> Sign Out</a>
+            </li>
+
+            <li sec:authorize="isAnonymous()">
+                <a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+<div class="container" style="margin-top:40px">
+    <p style="visibility: hidden">hidden</p>
+</div>
+
+    <br>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">New input</div>
+        <div class="panel-body">
+            <form class="form-horizontal" enctype="multipart/form-data" role="form" th:object="${form}" th:method="post" th:action="@{/form}">
+                <div style="border:1px solid lightgray;">
+                    <br>
+                <div class="form-group">
+                    <label for="Acronym" class="col-sm-2 control-label">Acronym</label>
+                    <input type="text" th:field="*{Acronym}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Old_nummeration" class="col-sm-2 control-label">Old nummeration</label>
+                    <input type="text" th:field="*{Old_nummeration}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Isolation_source" class="col-sm-2 control-label">Isolation source</label>
+                    <input type="text" th:field="*{Isolation_source}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Isolation_date" class="col-sm-2 control-label">Isolation date</label>
+                    <input type="date" th:field="*{Isolation_date}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Genus" class="col-sm-2 control-label">Genus</label>
+                    <input type="text" th:field="*{Genus}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Species" class="col-sm-2 control-label">Species</label>
+                    <input type="text" th:field="*{Species}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Subspecies" class="col-sm-2 control-label">Subspecies</label>
+                    <input type="text" th:field="*{Subspecies}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="MALDI_score" class="col-sm-2 control-label">MALDI score</label>
+                    <input type="number" th:field="*{MALDI_score}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Position_in_fridge" class="col-sm-2 control-label">Position in fridge</label>
+                    <input type="text" th:field="*{Position_in_fridge}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Storage_date" class="col-sm-2 control-label">Storage date</label>
+                    <input type="number" th:field="*{Storage_date}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Cultivation_conditions" class="col-sm-2 control-label">Cultivation conditions</label>
+                    <input type="text" th:field="*{Cultivation_conditions}"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="files" class="col-sm-2 control-label">Files</label>
+                    <input type="file" name="array" multiple="multiple"></input>
+                </div>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="GentamycinMIC" class="col-sm-2 control-label">Gentamycin MIC</label>
+                        <input type="text" th:field="*{GentamycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="KanamycinMIC" class="col-sm-2 control-label">Kanamycin MIC</label>
+                        <input type="text" th:field="*{KanamycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StreptomycinMIC" class="col-sm-2 control-label">Streptomycin MIC</label>
+                        <input type="text" th:field="*{StreptomycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NeomycinMIC" class="col-sm-2 control-label">Neomycin MIC</label>
+                        <input type="text" th:field="*{NeomycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TetracyclinMIC" class="col-sm-2 control-label">Tetracyclin MIC</label>
+                        <input type="text" th:field="*{TetracyclinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ErytomycinMIC" class="col-sm-2 control-label">Erytomycin MIC</label>
+                        <input type="text" th:field="*{ErytomycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ClindamycinMIC" class="col-sm-2 control-label">Clindamycin MIC</label>
+                        <input type="text" th:field="*{ClindamycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ChloramphenicolMIC" class="col-sm-2 control-label">Chloramphenicol MIC</label>
+                        <input type="text" th:field="*{ChloramphenicolMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AmpicillinMIC" class="col-sm-2 control-label">Ampicillin MIC</label>
+                        <input type="text" th:field="*{AmpicillinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PenicillinMIC" class="col-sm-2 control-label">Penicillin MIC</label>
+                        <input type="text" th:field="*{PenicillinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VancomycinMIC" class="col-sm-2 control-label">Vancomycin MIC</label>
+                        <input type="text" th:field="*{VancomycinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuinipristindalfopristinMIC" class="col-sm-2 control-label">Quinipristin-dalfopristin MIC</label>
+                        <input type="text" th:field="*{QuinipristindalfopristinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LinezolidMIC" class="col-sm-2 control-label">Linezolid MIC</label>
+                        <input type="text" th:field="*{LinezolidMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TrimethoprimMIC" class="col-sm-2 control-label">Trimethoprim MIC</label>
+                        <input type="text" th:field="*{TrimethoprimMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CiprofloxacinMIC" class="col-sm-2 control-label">Ciprofloxacin MIC</label>
+                        <input type="text" th:field="*{CiprofloxacinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RifampicinMIC" class="col-sm-2 control-label">Rifampicin MIC</label>
+                        <input type="text" th:field="*{RifampicinMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LylosineMIC" class="col-sm-2 control-label">Lylosine MIC</label>
+                        <input type="text" th:field="*{LylosineMIC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Imipenem" class="col-sm-2 control-label">Imipenem</label>
+                        <input type="text" th:field="*{Imipenem}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Metronidazole" class="col-sm-2 control-label">Metronidazole</label>
+                        <input type="text" th:field="*{Metronidazole}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="FortyFour" class="col-sm-2 control-label">44 &deg;C</label>
+                        <input type="text" th:field="*{FortyFour}"></input>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="ThirtySeven" class="col-sm-2 control-label">37 &deg;C</label>
+                        <input type="text" th:field="*{ThirtySeven}"></input>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Twenty" class="col-sm-2 control-label">20 &deg;C</label>
+                        <input type="text" th:field="*{Twenty}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Fiveteen" class="col-sm-2 control-label">15 &deg;C</label>
+                        <input type="text" th:field="*{Fiveteen}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Four" class="col-sm-2 control-label">4 &deg;C</label>
+                        <input type="text" th:field="*{Four}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="Autoaggregation" class="col-sm-2 control-label">Autoaggregation</label>
+                        <input type="text" th:field="*{Autoaggregation}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Gasformation" class="col-sm-2 control-label">Gas formation</label>
+                        <input type="text" th:field="*{Gasformation}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AOCwholecells" class="col-sm-2 control-label">AOC (%) whole cells</label>
+                        <input type="number" th:field="*{AOCwholecells}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AOCCelllysates " class="col-sm-2 control-label">AOC (%) Cell lysates </label>
+                        <input type="number" th:field="*{AOCCelllysates}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pHresistance" class="col-sm-2 control-label">pH resistance</label>
+                        <input type="number" th:field="*{pHresistance}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wvbilesaltsresistance" class="col-sm-2 control-label">2% w/v bile salts resistance</label>
+                        <input type="number" th:field="*{wvbilesaltsresistance}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wvpancreatinresistance " class="col-sm-2 control-label">0,5% w/v pancreatin resistance </label>
+                        <input type="number" th:field="*{wvpancreatinresistance}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LAM" class="col-sm-2 control-label">LA &mu;M</label>
+                        <input type="number" th:field="*{LAM}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LAmgl" class="col-sm-2 control-label">LA mg/l</label>
+                        <input type="number" th:field="*{LAmgl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="KM" class="col-sm-2 control-label">K &mu;M</label>
+                        <input type="number" th:field="*{KM}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Kmgl" class="col-sm-2 control-label">K mg/l</label>
+                        <input type="number" th:field="*{Kmgl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LAKM" class="col-sm-2 control-label">LA-K&mu;M</label>
+                        <input type="number" th:field="*{LAKM}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LAKmgl" class="col-sm-2 control-label">LA-Kmg/l</label>
+                        <input type="number" th:field="*{LAKmgl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proteolSMA" class="col-sm-2 control-label">proteol SMA</label>
+                        <input type="number" th:field="*{proteolSMA}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CaCN" class="col-sm-2 control-label">Ca-CN</label>
+                        <input type="number" th:field="*{CaCN}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Piimakalgend" class="col-sm-2 control-label">Piimakalgend</label>
+                        <input type="number" th:field="*{Piimakalgend}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CLAMRSmgl" class="col-sm-2 control-label">CLA MRS mg/l</label>
+                        <input type="number" th:field="*{CLAMRSmgl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CLASKIMM" class="col-sm-2 control-label">CLA SKIM uM</label>
+                        <input type="number" th:field="*{CLASKIMM}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CLAmgl" class="col-sm-2 control-label">CLA mg/l</label>
+                        <input type="number" th:field="*{CLAmgl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TAA" class="col-sm-2 control-label">TAA</label>
+                        <input type="number" th:field="*{TAA}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TAS" class="col-sm-2 control-label">TAS (mmol/l)</label>
+                        <input type="number" th:field="*{TAS}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TARmmolTroloxequivalentL" class="col-sm-2 control-label">TARmmol Trolox equivalent/L</label>
+                        <input type="number" th:field="*{TARmmolTroloxequivalentL}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ResisttoAggregation" class="col-sm-2 control-label">Resist to Aggregation</label>
+                        <input type="number" th:field="*{ResisttoAggregation}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="APFcopies" class="col-sm-2 control-label">APFcopies</label>
+                        <input type="number" th:field="*{APFcopies}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CaCNTWO" class="col-sm-2 control-label">Ca-CN2 20.10.2005</label>
+                        <input type="number" th:field="*{CaCNTWO}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NOconcm" class="col-sm-2 control-label">NO conc (&mu;m)</label>
+                        <input type="number" th:field="*{NOconcm}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HOconcm" class="col-sm-2 control-label">H2O2 conc (&mu;m)</label>
+                        <input type="number" th:field="*{HOconcm}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Ratioofsignals" class="col-sm-2 control-label">Ratio of signals</label>
+                        <input type="number" th:field="*{Ratioofsignals}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HOwholecellsgml" class="col-sm-2 control-label">H2O2 whole cells (&mu;g/ml)</label>
+                        <input type="number" th:field="*{HOwholecellsgml}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HOcelllysategml" class="col-sm-2 control-label">H2O2 cell lysate (&mu;g/ml)</label>
+                        <input type="number" th:field="*{HOcelllysategml}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Lacticacidhmicrommoll" class="col-sm-2 control-label">Lactic acid 48h, micro(mmol/l)</label>
+                        <input type="number" th:field="*{Lacticacidhmicrommoll}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Aceticacid" class="col-sm-2 control-label">Acetic acid</label>
+                        <input type="number" th:field="*{Aceticacid}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Succinicacid" class="col-sm-2 control-label">Succinic acid</label>
+                        <input type="number" th:field="*{Succinicacid}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HOmM" class="col-sm-2 control-label">H2O2 (mM)</label>
+                        <input type="number" th:field="*{HOmM}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Varasemadtulemusedgml" class="col-sm-2 control-label">Varasemad tulemused &mu;g/ml</label>
+                        <input type="number" th:field="*{Varasemadtulemusedgml}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="Glycerol" class="col-sm-2 control-label">Glycerol</label>
+                        <input type="text" th:field="*{Glycerol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Erythritol" class="col-sm-2 control-label">Erythritol</label>
+                        <input type="text" th:field="*{Erythritol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Arabinose" class="col-sm-2 control-label">D-arabinose</label>
+                        <input type="text" th:field="*{Arabinose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Larabinose" class="col-sm-2 control-label">L-arabinose</label>
+                        <input type="text" th:field="*{Larabinose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Ribose" class="col-sm-2 control-label">Ribose</label>
+                        <input type="text" th:field="*{Ribose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dxylose" class="col-sm-2 control-label">D-xylose</label>
+                        <input type="text" th:field="*{Dxylose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Lxylose" class="col-sm-2 control-label">L-xylose</label>
+                        <input type="text" th:field="*{Lxylose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dadonitol" class="col-sm-2 control-label">D-adonitol</label>
+                        <input type="text" th:field="*{Dadonitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MethylDxylopyranoside" class="col-sm-2 control-label">Methyl-&beta;-D-xylopyranoside</label>
+                        <input type="text" th:field="*{MethylDxylopyranoside}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dgalactose" class="col-sm-2 control-label">D-galactose</label>
+                        <input type="text" th:field="*{Dgalactose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dglucose" class="col-sm-2 control-label">D-glucose</label>
+                        <input type="text" th:field="*{Dglucose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dfructose" class="col-sm-2 control-label">D-fructose</label>
+                        <input type="text" th:field="*{Dfructose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dmannose" class="col-sm-2 control-label">D-mannose</label>
+                        <input type="text" th:field="*{Dmannose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Lsorbose" class="col-sm-2 control-label">L-sorbose</label>
+                        <input type="text" th:field="*{Lsorbose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Lrhamnose" class="col-sm-2 control-label">L-rhamnose</label>
+                        <input type="text" th:field="*{Lrhamnose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dulcitol" class="col-sm-2 control-label">Dulcitol</label>
+                        <input type="text" th:field="*{Dulcitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Inositol" class="col-sm-2 control-label">Inositol</label>
+                        <input type="text" th:field="*{Inositol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dmannitol" class="col-sm-2 control-label">D-mannitol</label>
+                        <input type="text" th:field="*{Dmannitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dsorbitol" class="col-sm-2 control-label">D-sorbitol</label>
+                        <input type="text" th:field="*{Dsorbitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mannopyranoside	" class="col-sm-2 control-label">&alpha;-methyl-D-mannoside / mannopyranoside</label>
+                        <input type="text" th:field="*{mannopyranoside}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="glycopyranoside" class="col-sm-2 control-label">&alpha;-methyl-D-glucoside / glycopyranoside</label>
+                        <input type="text" th:field="*{glycopyranoside}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Nacetylglucosamine" class="col-sm-2 control-label">N-acetyl-glucosamine</label>
+                        <input type="text" th:field="*{Nacetylglucosamine}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Amygdalin" class="col-sm-2 control-label">Amygdalin</label>
+                        <input type="text" th:field="*{Amygdalin}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Arbutine" class="col-sm-2 control-label">Arbutine</label>
+                        <input type="text" th:field="*{Arbutine}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Esculine" class="col-sm-2 control-label">Esculine</label>
+                        <input type="text" th:field="*{Esculine}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Salitsin" class="col-sm-2 control-label">Salitsin</label>
+                        <input type="text" th:field="*{Salitsin}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dcellobiose" class="col-sm-2 control-label">D-cellobiose</label>
+                        <input type="text" th:field="*{Dcellobiose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dmaltose" class="col-sm-2 control-label">D-maltose</label>
+                        <input type="text" th:field="*{Dmaltose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dlactosebovine" class="col-sm-2 control-label">D-lactose (bovine)</label>
+                        <input type="text" th:field="*{Dlactosebovine}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dmelibiose" class="col-sm-2 control-label">D-melibiose</label>
+                        <input type="text" th:field="*{Dmelibiose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dsaccharose" class="col-sm-2 control-label">D-saccharose</label>
+                        <input type="text" th:field="*{Dsaccharose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dtrehalose" class="col-sm-2 control-label">D-trehalose</label>
+                        <input type="text" th:field="*{Dtrehalose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Inulin" class="col-sm-2 control-label">Inulin</label>
+                        <input type="text" th:field="*{Inulin}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dmelezitose" class="col-sm-2 control-label">D-melezitose</label>
+                        <input type="text" th:field="*{Dmelezitose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Draffinose" class="col-sm-2 control-label">D-raffinose</label>
+                        <input type="text" th:field="*{Draffinose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AmidonstarchGlycogen" class="col-sm-2 control-label">Amidon (starch) Glycogen</label>
+                        <input type="text" th:field="*{AmidonstarchGlycogen}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Xylitol" class="col-sm-2 control-label">Xylitol</label>
+                        <input type="text" th:field="*{Xylitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bgentiobiose" class="col-sm-2 control-label">&beta;-gentiobiose</label>
+                        <input type="text" th:field="*{Bgentiobiose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dturanose" class="col-sm-2 control-label">D-turanose</label>
+                        <input type="text" th:field="*{Dturanose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dlyxose" class="col-sm-2 control-label">D-lyxose</label>
+                        <input type="text" th:field="*{Dlyxose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dtagatose" class="col-sm-2 control-label">D-tagatose</label>
+                        <input type="text" th:field="*{Dtagatose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dfucose" class="col-sm-2 control-label">D-fucose</label>
+                        <input type="text" th:field="*{Dfucose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Lfucose" class="col-sm-2 control-label">L-fucose</label>
+                        <input type="text" th:field="*{Lfucose}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Darabitol" class="col-sm-2 control-label">D-arabitol</label>
+                        <input type="text" th:field="*{Darabitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Larabitol" class="col-sm-2 control-label">L-arabitol</label>
+                        <input type="text" th:field="*{Larabitol}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Potassiumgluconate" class="col-sm-2 control-label">Potassium gluconate</label>
+                        <input type="text" th:field="*{Potassiumgluconate}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PotassiumTketogluconate" class="col-sm-2 control-label">Potassium-2-ketogluconate</label>
+                        <input type="text" th:field="*{PotassiumTketogluconate}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PotassiumFketogluconate" class="col-sm-2 control-label">Potassium-5-ketogluconate</label>
+                        <input type="text" th:field="*{PotassiumFketogluconate}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Arginine" class="col-sm-2 control-label">Arginine</label>
+                        <input type="text" th:field="*{Arginine}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RaftiloseL" class="col-sm-2 control-label">Raftilose L60/75</label>
+                        <input type="text" th:field="*{RaftiloseL}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RaftiloseSynergy" class="col-sm-2 control-label">Raftilose Synergy1</label>
+                        <input type="text" th:field="*{RaftiloseSynergy}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RaftiloseP" class="col-sm-2 control-label">Raftilose P95</label>
+                        <input type="text" th:field="*{RaftiloseP}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="hvanahvana" class="col-sm-2 control-label">7.03.2007 (48h vana) / 9.03.2007 (24h vana)</label>
+                        <input type="text" th:field="*{hvanahvana}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Alkalinephosphatase" class="col-sm-2 control-label">Alkaline phosphatase</label>
+                        <input type="text" th:field="*{Alkalinephosphatase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EsteraseCF" class="col-sm-2 control-label">Esterase (C4)</label>
+                        <input type="text" th:field="*{EsteraseCF}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EsteraseCE" class="col-sm-2 control-label">Esterase (C8)</label>
+                        <input type="text" th:field="*{EsteraseCE}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LipaseC" class="col-sm-2 control-label">Lipase (C14)</label>
+                        <input type="text" th:field="*{LipaseC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Leucinearylamidase" class="col-sm-2 control-label">Leucine arylamidase</label>
+                        <input type="text" th:field="*{Leucinearylamidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Valinearylamidase" class="col-sm-2 control-label">Valine arylamidase</label>
+                        <input type="text" th:field="*{Valinearylamidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Cystinearylamidase" class="col-sm-2 control-label">Cystine arylamidase</label>
+                        <input type="text" th:field="*{Cystinearylamidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Trypsin" class="col-sm-2 control-label">Trypsin</label>
+                        <input type="text" th:field="*{Trypsin}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chymotrypsin" class="col-sm-2 control-label">&alpha;-chymotrypsin</label>
+                        <input type="text" th:field="*{chymotrypsin}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Acidphosphatase" class="col-sm-2 control-label">Acid phosphatase</label>
+                        <input type="text" th:field="*{Acidphosphatase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NaphtholASBIphosphohydrolase" class="col-sm-2 control-label">Naphthol-AS-BI-phosphohydrolase</label>
+                        <input type="text" th:field="*{NaphtholASBIphosphohydrolase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Agalactosidase" class="col-sm-2 control-label">&alpha;-galactosidase</label>
+                        <input type="text" th:field="*{Agalactosidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bgalactosidase" class="col-sm-2 control-label">&beta;-galactosidase</label>
+                        <input type="text" th:field="*{Bgalactosidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bglucuronidase" class="col-sm-2 control-label">&beta;-glucuronidase</label>
+                        <input type="text" th:field="*{Bglucuronidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Aglucosidase" class="col-sm-2 control-label">&alpha;-glucosidase</label>
+                        <input type="text" th:field="*{Aglucosidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bglucosidase" class="col-sm-2 control-label">&beta;-glucosidase</label>
+                        <input type="text" th:field="*{Bglucosidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Nacetyl" class="col-sm-2 control-label">N-acetyl</label>
+                        <input type="text" th:field="*{Nacetyl}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Bglucosaminidase" class="col-sm-2 control-label">&beta;-glucosaminidase</label>
+                        <input type="text" th:field="*{Bglucosaminidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Amannosidase" class="col-sm-2 control-label">&alpha;-mannosidase</label>
+                        <input type="text" th:field="*{Amannosidase}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Afucosidase" class="col-sm-2 control-label">&alpha;-fucosidase</label>
+                        <input type="text" th:field="*{Afucosidase}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="BgalactosidaseONPG" class="col-sm-2 control-label">&beta;-galactosidase	ONPG</label>
+                        <input type="text" th:field="*{BgalactosidaseONPG}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="argininedihydrolaseADH" class="col-sm-2 control-label">arginine dihydrolase ADH</label>
+                        <input type="text" th:field="*{argininedihydrolaseADH}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lysinedecarboxylaseLDC" class="col-sm-2 control-label">lysine decarboxylase LDC</label>
+                        <input type="text" th:field="*{lysinedecarboxylaseLDC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ornithinedecarboxylaseODC" class="col-sm-2 control-label">ornithine decarboxylase	ODC</label>
+                        <input type="text" th:field="*{ornithinedecarboxylaseODC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="citrateutilisationCIT" class="col-sm-2 control-label">citrate utilisation CIT</label>
+                        <input type="text" th:field="*{citrateutilisationCIT}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HSproductionHS" class="col-sm-2 control-label">H2S production H2S</label>
+                        <input type="text" th:field="*{HSproductionHS}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ureaseURE" class="col-sm-2 control-label">urease URE</label>
+                        <input type="text" th:field="*{ureaseURE}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tryptophanediaminaseTDA" class="col-sm-2 control-label">tryptophane diaminase TDA</label>
+                        <input type="text" th:field="*{tryptophanediaminaseTDA}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="indoleproductionIND" class="col-sm-2 control-label">indole production IND</label>
+                        <input type="text" th:field="*{indoleproductionIND}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="acetoinproductionVogesProskauerVP" class="col-sm-2 control-label">acetoin production (Voges Proskauer) VP</label>
+                        <input type="text" th:field="*{acetoinproductionVogesProskauerVP}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gelatinaseGEL" class="col-sm-2 control-label">gelatinase GEL</label>
+                        <input type="text" th:field="*{gelatinaseGEL}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DglucosefermentationGLU" class="col-sm-2 control-label">D-glucose fermentation GLU</label>
+                        <input type="text" th:field="*{DglucosefermentationGLU}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DmannitolfermentationMAN" class="col-sm-2 control-label">D-mannitol fermentation MAN</label>
+                        <input type="text" th:field="*{DmannitolfermentationMAN}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inositolfermentationINO" class="col-sm-2 control-label">inositol fermentation INO</label>
+                        <input type="text" th:field="*{inositolfermentationINO}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DsorbitolfermentationSOR" class="col-sm-2 control-label">D-sorbitol fermentation SOR</label>
+                        <input type="text" th:field="*{DsorbitolfermentationSOR}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LrhamnosefermentationRHA" class="col-sm-2 control-label">L-rhamnose fermentation RHA</label>
+                        <input type="text" th:field="*{LrhamnosefermentationRHA}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DsucrosefermentationSAC" class="col-sm-2 control-label">D-sucrose fermentation SAC</label>
+                        <input type="text" th:field="*{DsucrosefermentationSAC}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DmelibiosefermentationMEL" class="col-sm-2 control-label">D-melibiose fermentation MEL</label>
+                        <input type="text" th:field="*{DmelibiosefermentationMEL}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amygdalinfermentationAMY" class="col-sm-2 control-label">amygdalin fermentation AMY</label>
+                        <input type="text" th:field="*{amygdalinfermentationAMY}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LarabinosefermentationARA" class="col-sm-2 control-label">L-arabinose fermentation ARA</label>
+                        <input type="text" th:field="*{LarabinosefermentationARA}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="ArginiinPut" class="col-sm-2 control-label">Arginiin Put (&mu;g/ml)</label>
+                        <input type="text" th:field="*{ArginiinPut}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ArginiinCad" class="col-sm-2 control-label">Arginiin Cad (&mu;g/ml)</label>
+                        <input type="text" th:field="*{ArginiinCad}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="GlutamiinPut" class="col-sm-2 control-label">Glutamiin Put (&mu;g/ml)</label>
+                        <input type="text" th:field="*{GlutamiinPut}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="GlutamiinCad" class="col-sm-2 control-label">Glutamiin Cad (&mu;g/ml)</label>
+                        <input type="text" th:field="*{GlutamiinCad}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LusiinPut" class="col-sm-2 control-label">Lüsiin Put (&mu;g/ml)</label>
+                        <input type="text" th:field="*{LusiinPut}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LusiinCad" class="col-sm-2 control-label">Lüsiin Cad (&mu;g/ml)</label>
+                        <input type="text" th:field="*{LusiinCad}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OrnitiinPut" class="col-sm-2 control-label">Ornitiin Put (&mu;g/ml)</label>
+                        <input type="text" th:field="*{OrnitiinPut}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OrnitiinCad" class="col-sm-2 control-label">Ornitiin Cat (&mu;g/ml)</label>
+                        <input type="text" th:field="*{OrnitiinCad}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HistidiinHis" class="col-sm-2 control-label">Histidiin His (&mu;g/ml)</label>
+                        <input type="text" th:field="*{HistidiinHis}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+                <div style="border:1px solid lightgray;">
+                    <br>
+
+                    <div class="form-group">
+                        <label for="AceticacidTFh" class="col-sm-2 control-label">Acetic acid 24h</label>
+                        <input type="text" th:field="*{AceticacidTFh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AceticacidFEh" class="col-sm-2 control-label">Acetic acid 48h</label>
+                        <input type="text" th:field="*{AceticacidFEh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LacticacidTFh" class="col-sm-2 control-label">Lactic acid 24h</label>
+                        <input type="text" th:field="*{LacticacidTFh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LacticacidFEh" class="col-sm-2 control-label">Lactic acid 48h</label>
+                        <input type="text" th:field="*{LacticacidFEh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SuccinicacidTFh" class="col-sm-2 control-label">Succinic acid 24h</label>
+                        <input type="text" th:field="*{SuccinicacidTFh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SuccinicacidFEh" class="col-sm-2 control-label">Succinic acid 48h</label>
+                        <input type="text" th:field="*{SuccinicacidFEh}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Subspecies" class="col-sm-2 control-label">Ethanol</label>
+                        <input type="text" th:field="*{Ethanol}"></input>
+                    </div>
+
+                    <br>
+                </div>
+                    <br>
+
+                <button class="btn btn-default" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<html lang="en" xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <title>BioCC</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        .row#filter{
+            margin-top:0px;
+            margin-left: -45px;
+            padding: 0 0px;
+        }
+
+        .clickable#filter{
+            margin-top:-20px;
+            cursor: pointer;
+        }
+
+        .panel-heading#filter span#filter {
+            margin-top: -20px;
+            font-size: 15px;
+        }
+
+        input[type=submit] {
+            background-color: whitesmoke;
+            color: rgba(0,0,0,0.82);
+            border-style: solid;
+            border-color: dimgrey;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        input[type=submit]:hover{
+            background-color: white;
+        }
+
+
+    </style>
+
+    <script>
+        $(document).on('click', '.panel-heading span.clickable', function(e){
+            var $this = $(this);
+            if(!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+        })
+
+        $('#myForm').submit(function() {
+            var c = confirm("Click OK to continue");
+        });
+    </script>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/FirstPage.html">BioCC</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/FirstPage.html">Home</a></li>
+
+        </ul>
+        <form class="navbar-form navbar-right" method="post" action="search" enctype="multipart/form-data">
+            <div class="input-group">
+                <input th:type="text" name="text" class="form-control" placeholder="Search"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </div>
+        </form>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li sec:authorize="isAuthenticated()">
+                <a href="/logout" th:method="post"><span class="glyphicon glyphicon-log-out"> </span> Sign Out</a>
+            </li>
+
+            <li sec:authorize="isAnonymous()">
+            <a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li sec:authorize="isAuthenticated()">
+                <a> Logged as <span sec:authentication="name" style="text-transform: capitalize "></span></a>
+            </li>
+
+        </ul>
+    </div>
+
+</nav>
+
+<div class="container" style="margin-top:40px">
+    <p style="visibility: hidden">hidden</p>
+</div>
+
+
+
+<div class="container">
+
+    <div class="container" id="filter">
+        <div class="row" id="filter">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Filter</h3>
+                        <span class="pull-right clickable" id="filter"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                    </div>
+                    <div class="panel-body">
+                        <form name="filterForm" method="post" action="filter">
+                            <!--Old Numeration From: <input type="number" name="OldNumerationFrom"/> <br/>
+                            Old Numeration To: <input type="number" name="OldNumerationTo"/> <br/>
+                            <br/>
+                            Isolation Source:
+                            <select name="IsolationSource">
+                                <option value="All">-&#45;&#45;</option>
+                                <option value="ioemwfd">ioemwfd</option>
+                                <option value="ioqjd">ioqjd</option>
+                                <option value="poi">Mercedes</option>
+                                <option value="ioj">Audi</option>
+                            </select>
+                            <br/>-->
+                            Isolation date From: <input type="date" name="IsolationDateStart"/> To:  <input type="date" name="IsolationDateEnd"/><br/>
+                            <div sec:authorize="isAuthenticated()">
+                                <br/>
+                                MALDI score From: <input type="number" name="MaldiScoreFrom"/> To: <input type="number" name="MaldiScoreTo"/><br/>
+                                <!--<br/>
+                                Position in fridge From: <input type="number" name="PositionInFridgeFrom"/> <br/>
+                                Position in fridge To: <input type="number" name="PositionInFridgeTo"/> <br/>-->
+                                <br/>
+                                Storage date From: <input type="date" name="StorageDateStart"/> To: <input type="date" name="StorageDateEnd"/><br/>
+                            </div>
+                            <br/>
+                            <input type="submit" value="Filter" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+    <div class="panel panel-default">
+        <div class="panel-heading">List of all parameters</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Acronym</th>
+                        <th>Old nummeration</th>
+                        <th>Isolation source</th>
+                        <th>Isolation date</th>
+                        <th>Genus</th>
+                        <th>Species</th>
+                        <th sec:authorize="isAuthenticated()">
+                            Subspecies
+                        </th>
+                        <th sec:authorize="isAuthenticated()">
+                            MALDI score
+                        </th>
+                        <th sec:authorize="isAuthenticated()">
+                            Position in fridge
+                        </th>
+                        <th sec:authorize="isAuthenticated()">
+                            Storage date
+                        </th>
+
+                        <th>Cultivation conditions</th>
+<!--                        <th th:width="auto">File</th>-->
+                        <th sec:authorize="isAuthenticated()">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="plant : ${attributes}">
+                        <td th:text="${plant.id}"></td>
+                        <td><a th:href="@{'/acronym/' + ${plant.id}}"><div th:utext="${plant.Acronym}"></div></a></td>
+                        <td th:text="${plant.Old_nummeration}"></td>
+                        <td th:text="${plant.Isolation_source}"></td>
+                        <td th:text="${plant.Isolation_date}"></td>
+                        <td th:text="${plant.Genus}"></td>
+                        <td th:text="${plant.Species}"></td>
+                        <td sec:authorize="isAuthenticated()" th:text="${plant.Subspecies}"></td>
+                        <td sec:authorize="isAuthenticated()" th:text="${plant.MALDI_score}"></td>
+                        <td sec:authorize="isAuthenticated()" th:text="${plant.Position_in_fridge}"></td>
+                        <td sec:authorize="isAuthenticated()" th:text="${plant.Storage_date}"></td>
+                        <td th:text="${plant.Cultivation_conditions}"></td>
+<!--                        <td th:each="one : ${plant.files}"><a th:href="@{'/picture/' + ${one.id}}"><div th:utext="${one.fileName}"></div></a></td>-->
+                        <td sec:authorize="isAuthenticated()">
+<!--                            <form style='float:left; padding:5px; height:0px' th:method="get" th:action="@{'/change/'+${plant.id}+'/form'}"><button class="btn btn-default btn-xs" type="submit"><span class="glyphicon glyphicon-pencil"></span></button></form>-->
+                            <form style='float:left; padding:5px; height:0px' th:method="delete" th:action="@{'/delete/'+${plant.id}}"><button class="btn btn-default btn-xs" type="submit" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash"></span></button></form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-default" th:href="@{/form}">Add a new value</a>
+        </div>
+    </div>
+    </div>
+
+        <div class="row">
+            <div class="col">
+
+
+    <!--<div>
+        Filter:
+        <form name="filterForm" method="post" action="filter">
+            &lt;!&ndash;Old Numeration From: <input type="number" name="OldNumerationFrom"/> <br/>
+            Old Numeration To: <input type="number" name="OldNumerationTo"/> <br/>
+            <br/>
+            Isolation Source:
+            <select name="IsolationSource">
+                <option value="All">-&#45;&#45;</option>
+                <option value="ioemwfd">ioemwfd</option>
+                <option value="ioqjd">ioqjd</option>
+                <option value="poi">Mercedes</option>
+                <option value="ioj">Audi</option>
+            </select>
+            <br/>&ndash;&gt;
+            Isolation date from: <input type="date" name="IsolationDateStart"/> <br/>
+            Isolation date to: <input type="date" name="IsolationDateEnd"/> <br/>
+            <div sec:authorize="isAuthenticated()">
+            <br/>
+            MALDI score From: <input type="number" name="MaldiScoreFrom"/> <br/>
+            MALDI score To: <input type="number" name="MaldiScoreTo"/> <br/>
+            &lt;!&ndash;<br/>
+            Position in fridge From: <input type="number" name="PositionInFridgeFrom"/> <br/>
+            Position in fridge To: <input type="number" name="PositionInFridgeTo"/> <br/>&ndash;&gt;
+            <br/>
+            Storage date from: <input type="date" name="StorageDateStart"/> <br/>
+            Storage date to: <input type="date" name="StorageDateEnd"/> <br/>
+            </div>
+            <br/>
+            <input type="submit" value="Filter" />
+        </form>
+    </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+<!--https://bootsnipp.com/snippets/qN3Wz-->
